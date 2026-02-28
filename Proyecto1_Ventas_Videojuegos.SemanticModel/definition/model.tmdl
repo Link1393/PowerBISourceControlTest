@@ -1,0 +1,19 @@
+model Model
+	culture: es-ES
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: es-CO
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Ventas Videojuegos"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table 'Ventas Videojuegos'
+ref table DateTableTemplate_30f00b50-48fb-4675-8e97-bebc3f2e58b7
+
+ref cultureInfo es-ES
+

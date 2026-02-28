@@ -1,0 +1,54 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "name": "7121c2511081d4f3fe63",
+  "position": {
+    "x": 1039.7014925373135,
+    "y": 0,
+    "z": 11000,
+    "height": 66.268656716417908,
+    "width": 189.85074626865671,
+    "tabOrder": 10000
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Ventas Videojuegos"
+                    }
+                  },
+                  "Property": "Editorial"
+                }
+              },
+              "queryRef": "Ventas Videojuegos.Editorial",
+              "nativeQueryRef": "Editorial",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

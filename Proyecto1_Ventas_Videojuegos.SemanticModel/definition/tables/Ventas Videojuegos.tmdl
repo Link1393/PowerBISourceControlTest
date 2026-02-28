@@ -1,0 +1,100 @@
+table 'Ventas Videojuegos'
+	lineageTag: df53b156-4f8b-4454-819b-c71685449fdf
+
+	column Nombre
+		dataType: string
+		lineageTag: be778ca5-5b3e-40f1-b850-24f1afccd9ae
+		summarizeBy: none
+		sourceColumn: Nombre
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Plataforma
+		dataType: string
+		lineageTag: 9ee5de6a-6304-41fc-99f6-a8e1b1541e5e
+		summarizeBy: none
+		sourceColumn: Plataforma
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Año
+		dataType: string
+		lineageTag: 0eb0977d-d590-4373-8252-72c153011738
+		summarizeBy: none
+		sourceColumn: Año
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Genero
+		dataType: string
+		lineageTag: 738e0b81-ac98-431f-8e08-df87975634e6
+		summarizeBy: none
+		sourceColumn: Genero
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Editorial
+		dataType: string
+		lineageTag: 33be1182-8647-4d04-a762-4bc641c781fc
+		summarizeBy: none
+		sourceColumn: Editorial
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ventas (Millones)'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: f11db2e0-6095-4fe6-a621-ba8fbaf68493
+		summarizeBy: sum
+		sourceColumn: Ventas (Millones)
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Región
+		dataType: string
+		lineageTag: f2a941f5-3f09-4ab4-baa7-0b611014b393
+		summarizeBy: none
+		sourceColumn: Región
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Ventas Videojuegos' = m
+		mode: import
+		source =
+				let
+				    Origen = Excel.Workbook(File.Contents("C:\Users\Flia Lopez Montaño\Documents\PowerBI\Proyecto1_Ventas_Videojuegos\Ventas+Videojuegos.xlsx"), null, true),
+				    #"Ventas Videojuegos_Sheet" = Origen{[Item="Ventas Videojuegos",Kind="Sheet"]}[Data],
+				    #"Encabezados promovidos" = Table.PromoteHeaders(#"Ventas Videojuegos_Sheet", [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Nombre", type text}, {"Plataforma", type any}, {"Año", Int64.Type}, {"Genero", type text}, {"Editorial", type text}, {"Ventas NA", type number}, {"Ventas EU", type number}, {"Ventas JP", type number}, {"Ventas Otros", type number}, {"Ventas Global", type number}}),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Tipo cambiado",{"Ventas Global"}),
+				    #"Columna de anulación de dinamización" = Table.UnpivotOtherColumns(#"Columnas quitadas", {"Nombre", "Plataforma", "Año", "Genero", "Editorial"}, "Atributo", "Valor"),
+				    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Columna de anulación de dinamización",{{"Atributo", "Region"}, {"Valor", "Ventas (Millones)"}}),
+				    #"Valor reemplazado" = Table.ReplaceValue(#"Columnas con nombre cambiado","Ventas ","",Replacer.ReplaceText,{"Region"}),
+				    #"Valor reemplazado1" = Table.ReplaceValue(#"Valor reemplazado","NA","Norte America",Replacer.ReplaceText,{"Region"}),
+				    #"Valor reemplazado2" = Table.ReplaceValue(#"Valor reemplazado1","EU","Europa",Replacer.ReplaceText,{"Region"}),
+				    #"Valor reemplazado3" = Table.ReplaceValue(#"Valor reemplazado2","JP","Japon",Replacer.ReplaceText,{"Region"}),
+				    #"Columnas con nombre cambiado1" = Table.RenameColumns(#"Valor reemplazado3",{{"Region", "Región"}}),
+				    #"Valor reemplazado4" = Table.ReplaceValue(#"Columnas con nombre cambiado1","Japon","Japón",Replacer.ReplaceText,{"Región"}),
+				    #"Tipo cambiado1" = Table.TransformColumnTypes(#"Valor reemplazado4",{{"Año", type text}, {"Plataforma", type text}}),
+				    #"Valor reemplazado5" = Table.ReplaceValue(#"Tipo cambiado1","Norte America","Norteamérica",Replacer.ReplaceText,{"Región"})
+				in
+				    #"Valor reemplazado5"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegación
+

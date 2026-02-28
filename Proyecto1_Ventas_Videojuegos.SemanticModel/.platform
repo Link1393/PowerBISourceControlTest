@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Proyecto1_Ventas_Videojuegos"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "055ddc05-542c-4258-aec8-bb19b97c94e7"
+  }
+}
